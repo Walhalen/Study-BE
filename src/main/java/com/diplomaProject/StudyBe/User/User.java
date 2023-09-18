@@ -31,12 +31,14 @@ public class User {
                     name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id" )
-            )
+    )
 
 
     @Column(name = "roles")
     private Collection<Role> roles;
 
+    public User() {
+    }
 
     public User(String first_name, String last_name, String email, String password, Collection<Role> roles) {
         this.first_name = first_name;
@@ -92,5 +94,18 @@ public class User {
 
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
+    }
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", first_name='" + first_name + '\'' +
+                ", last_name='" + last_name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 }

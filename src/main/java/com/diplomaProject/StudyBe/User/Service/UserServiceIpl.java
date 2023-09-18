@@ -7,7 +7,7 @@ import com.diplomaProject.StudyBe.User.web.dto.UserRegistrationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
+import java.util.*;
 
 @Service
 public class UserServiceIpl implements UserService {
@@ -25,4 +25,26 @@ public class UserServiceIpl implements UserService {
 
         return userRepository.save(user);
     }
+
+    @Override
+    public List<User> findAll() {
+         return userRepository.findAll();
+    }
+
+    @Override
+    public User findById(Long id ) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        List<User> userList = findAll();
+        Optional<User> userWithThatEmail = userList.stream()
+                .filter(user -> user.getEmail().equals(email))
+                .findFirst();
+
+        return userWithThatEmail.orElse(null);
+    }
+
+
 }

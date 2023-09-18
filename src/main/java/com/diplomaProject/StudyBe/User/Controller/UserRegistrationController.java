@@ -8,7 +8,7 @@
     import org.springframework.web.bind.annotation.*;
 
     @RestController
-    @RequestMapping("/registration")
+    @RequestMapping("/user/registration")
     public class UserRegistrationController {
 
         @Autowired
@@ -37,4 +37,7 @@
             // Add any logic for /registration/ here
             return "Registration Page";
         }
+
+
+
     }
