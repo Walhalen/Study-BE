@@ -1,13 +1,17 @@
 package com.diplomaProject.StudyBe.User.Service;
 
 import com.diplomaProject.StudyBe.User.Repository.UserRepository;
-import com.diplomaProject.StudyBe.Role.Role;
+
+import com.diplomaProject.StudyBe.User.Role;
 import com.diplomaProject.StudyBe.User.User;
 import com.diplomaProject.StudyBe.User.web.dto.UserRegistrationDto;
+import org.hibernate.metamodel.internal.AbstractDynamicMapInstantiator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+
+import static com.diplomaProject.StudyBe.User.Role.ADMIN;
 
 @Service
 public class UserServiceIpl implements UserService {
@@ -19,8 +23,10 @@ public class UserServiceIpl implements UserService {
 
     @Override
     public User save(UserRegistrationDto registrationDto) {
+
+
         User user  = new User(registrationDto.getFirst_name(), registrationDto.getLast_name(),
-                registrationDto.getEmail(),registrationDto.getPassword(), Arrays.asList(new Role("Admin")));
+                registrationDto.getEmail(),registrationDto.getPassword(), ADMIN );
 
 
         return userRepository.save(user);
@@ -45,6 +51,7 @@ public class UserServiceIpl implements UserService {
 
         return userWithThatEmail.orElse(null);
     }
+
 
 
 }

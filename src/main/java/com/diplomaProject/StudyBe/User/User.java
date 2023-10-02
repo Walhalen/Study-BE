@@ -1,15 +1,19 @@
 package com.diplomaProject.StudyBe.User;
 
 
-import com.diplomaProject.StudyBe.Role.Role;
+import com.diplomaProject.StudyBe.Subject.Subject;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 
 @Entity
 @Table(name = "user")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,20 +36,21 @@ public class User {
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id" )
     )
-
-
     @Column(name = "roles")
-    private Collection<Role> roles;
+    private Collection<Subject> subjects;
 
     public User() {
     }
 
-    public User(String first_name, String last_name, String email, String password, Collection<Role> roles) {
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    public User(String first_name, String last_name, String email, String password, Role role) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.email = email;
         this.password = password;
-        this.roles = roles;
+        this.role = role;
     }
 
     public Long getId() {
@@ -80,22 +85,60 @@ public class User {
         this.email = email;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+    @Override
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public Collection<Role> getRoles() {
-        return roles;
+    public Collection<Subject> getSubjects() {
+        return subjects;
     }
 
-    public void setRoles(Collection<Role> roles) {
-        this.roles = roles;
+    public void setSubjects(Collection<Subject> subjects) {
+        this.subjects = subjects;
     }
 
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     @Override
     public String toString() {
@@ -105,7 +148,7 @@ public class User {
                 ", last_name='" + last_name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", roles=" + roles +
+                ", roles=" + subjects +
                 '}';
     }
 }

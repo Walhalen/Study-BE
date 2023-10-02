@@ -1,16 +1,16 @@
-package com.diplomaProject.StudyBe.Role.web.dto;
+package com.diplomaProject.StudyBe.Subject.web.dto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-public class RoleDto {
+public class SubjectDto {
 
 
     private String name;
 
-    public RoleDto(String name) {
+    public SubjectDto(String name) {
         this.name = name;
     }
 

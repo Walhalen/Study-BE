@@ -1,11 +1,11 @@
-package com.diplomaProject.StudyBe.Role;
+package com.diplomaProject.StudyBe.Subject;
 
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name="role")
-public class Role {
+public class Subject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,10 +14,10 @@ public class Role {
     @Column(name = "name" )
     private String name;
 
-    public Role() {
+    public Subject() {
     }
 
-    public Role(String name) {
+    public Subject(String name) {
         this.name = name;
     }
 
