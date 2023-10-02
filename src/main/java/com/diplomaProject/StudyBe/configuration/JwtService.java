@@ -19,7 +19,7 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "AF1EDA12E3D627EEE9394C9AF3349";
+    private static final String SECRET_KEY = "AvIvxJN13DJooNN/YjO+YX51obelWT3kQyqSQ9jxE9FdNHoLXwq/HzdPVM8QUiM7";
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -47,6 +47,7 @@ public class JwtService {
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails)
     {
+        System.out.println("Helloo 5");
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails
@@ -58,6 +59,7 @@ public class JwtService {
 
     public String generateToken(UserDetails userDetails)
     {
+        System.out.println("Helloo 4");
         return generateToken(new HashMap<>(), userDetails);
     }
 
