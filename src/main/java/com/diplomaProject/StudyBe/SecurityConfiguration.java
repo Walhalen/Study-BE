@@ -41,8 +41,8 @@ public class SecurityConfiguration {
 //                    auth.requestMatchers("/admin/").hasRole("ADMIN");
 //                    auth.requestMatchers("/user/**").hasAnyRole("ADMIN","USER");
 //                    auth.anyRequest().authenticated();
-                    auth.requestMatchers("/api/v1/auth/register", "/api/v1/auth/authentication").permitAll()
-                            .anyRequest().authenticated();
+                    auth.requestMatchers("/api/v1/auth/register", "/api/v1/auth/authentication").permitAll();
+                    auth.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider )
@@ -50,16 +50,16 @@ public class SecurityConfiguration {
 
         return http.build();
     }
-//    @Bean
-//    public CorsFilter corsFilter() {
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        CorsConfiguration config = new CorsConfiguration();
-//        config.addAllowedOrigin("http://localhost:3000");  // Replace with your frontend's URL
-//        config.addAllowedMethod("*");
-//        config.addAllowedHeader("*");
-//        source.registerCorsConfiguration("/**", config);
-//        return new CorsFilter(source);
-//    }
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedOrigin("http://localhost:3000");  // Replace with your frontend's URL
+        config.addAllowedMethod("*");
+        config.addAllowedHeader("*");
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
+    }
 //    @Bean
 //    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 //        return http

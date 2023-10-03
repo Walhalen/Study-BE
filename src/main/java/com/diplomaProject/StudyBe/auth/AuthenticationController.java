@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.naming.AuthenticationException;
+
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthenticationController {
@@ -21,9 +23,17 @@ public class AuthenticationController {
     };
 
     @PostMapping("/authentication")
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request)
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request)throws AuthenticationException
     {
         System.out.println("HELLOOOOOOOOO");
-        return ResponseEntity.ok(service.authenticate(request));
+        System.out.println(request.getEmail());
+        System.out.println(request.getPassword());
+        try{
+            return ResponseEntity.ok(service.authenticate(request));
+        }catch(AuthenticationException e)
+        {
+            throw e;
+        }
+
     };
 }

@@ -41,13 +41,13 @@ public class JwtService {
     }
 
     private Key getSignInKey( ) {
-        byte[] keyBytesss = Decoders.BASE64.decode(SECRET_KEY);
-        return Keys.hmacShaKeyFor(keyBytesss);
+        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails)
     {
-        System.out.println("Helloo 5");
+
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails
@@ -59,7 +59,7 @@ public class JwtService {
 
     public String generateToken(UserDetails userDetails)
     {
-        System.out.println("Helloo 4");
+
         return generateToken(new HashMap<>(), userDetails);
     }
 
