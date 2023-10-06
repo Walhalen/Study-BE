@@ -4,7 +4,7 @@ package com.diplomaProject.StudyBe.Subject;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="role")
+@Table(name="subject")
 public class Subject {
 
     @Id

@@ -3,7 +3,7 @@ package com.diplomaProject.StudyBe.auth;
 
 import jdk.jfr.DataAmount;
 
-public class AuthenticationResponse {
+public class AuthenticationResponse  {
 
     private String token;
 

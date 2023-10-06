@@ -48,21 +48,26 @@ public class AuthenticationService {
     }
 
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request)throws AuthenticationException
-    {
+    public AuthenticationResponse authenticate(AuthenticationRequest request) throws AuthenticationException {
 
 
 //        authenticationManager.authenticate(
 //                new UsernamePasswordAuthenticationToken(request.getEmail(),
 //                        request.getPassword())
 //        );
-
-        User user  = repository.findByEmail(request.getEmail()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
-        var jwtToken = jwtService.generateToken(user);
+        try {
+            User user = repository.findByEmail(request.getEmail()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
 
-        return new AuthenticationResponse(jwtToken);
+            var jwtToken = jwtService.generateToken(user);
+
+
+            return new AuthenticationResponse(jwtToken);
+        }catch(Exception error)
+        {
+            throw new AuthenticationException("This email is already in use");
+        }
+
     }
 
 }

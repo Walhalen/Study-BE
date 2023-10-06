@@ -34,6 +34,7 @@ public class UserServiceIpl implements UserService {
 
     @Override
     public List<User> findAll() {
+        System.out.println("Hellooooooooooo2");
          return userRepository.findAll();
     }
 

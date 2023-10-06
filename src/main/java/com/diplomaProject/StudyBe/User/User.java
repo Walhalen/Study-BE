@@ -23,20 +23,20 @@ public class User implements UserDetails {
     private String first_name;
     @Column(name = "second_name")
     private String last_name;
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
     @Column(name = "password")
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
-            name = "users_roles",
+            name = "user_tags",
             joinColumns = @JoinColumn(
                     name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "id" )
+                    name = "subject_id", referencedColumnName = "id" )
     )
-    @Column(name = "roles")
+//    @Column(name = "subject")
     private Collection<Subject> subjects;
 
     public User() {
