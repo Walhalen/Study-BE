@@ -31,7 +31,7 @@
         @PostMapping("/save")
         public String saveNewUser(@RequestBody UserRegistrationDto userRegistrationDto) {
             this.userService.save(userRegistrationDto);
-            return userRegistrationDto.getFirst_name();
+            return userRegistrationDto.getUsername();
         }
 
         @GetMapping("") // Map to /registration/

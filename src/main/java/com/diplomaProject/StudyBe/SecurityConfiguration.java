@@ -49,7 +49,7 @@ public class SecurityConfiguration {
 //                    auth.requestMatchers("/admin/").hasRole("ADMIN");
 
 //                    auth.anyRequest().authenticated();
-                    auth.requestMatchers( "/api/v1/auth/authentication").permitAll();
+                    auth.requestMatchers( "/api/v1/auth/authentication", "/api/v1/auth/register").permitAll();
                     auth.requestMatchers(HttpMethod.OPTIONS).permitAll();
                     auth.anyRequest().authenticated();
                 })

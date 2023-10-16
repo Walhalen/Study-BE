@@ -25,7 +25,7 @@ public class UserServiceIpl implements UserService {
     public User save(UserRegistrationDto registrationDto) {
 
 
-        User user  = new User(registrationDto.getFirst_name(), registrationDto.getLast_name(),
+        User user  = new User(registrationDto.getUsername(),
                 registrationDto.getEmail(),registrationDto.getPassword(), ADMIN );
 
 
@@ -34,7 +34,7 @@ public class UserServiceIpl implements UserService {
 
     @Override
     public List<User> findAll() {
-        System.out.println("Hellooooooooooo2");
+
          return userRepository.findAll();
     }
 

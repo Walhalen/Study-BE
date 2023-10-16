@@ -27,13 +27,13 @@ public class UserController {
 
     @GetMapping("/findAll")
     public List<User> findAll(){
-
+        System.out.println("Hellooooooo1");
         return userService.findAll();
     }
 
     @GetMapping("/findByID")
-    public User findByID(@RequestBody Long id){
-        return userService.findById(id);
+    public User findByID(){
+        return userService.findById(1L);
     }
 
 

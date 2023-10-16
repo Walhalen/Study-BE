@@ -1,6 +1,7 @@
 package com.diplomaProject.StudyBe.configuration;
 
 
+import com.diplomaProject.StudyBe.User.User;
 import io.micrometer.common.lang.NonNull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -53,17 +54,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null)
         {
 
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+            User userDetails = (User) this.userDetailsService.loadUserByUsername(userEmail);
+
             if(jwtService.isTokenValid(jwt, userDetails)){
+
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
                         userDetails.getAuthorities()
                 );
+
                 authToken.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request)
                 );
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+
             }
         }
         filterChain.doFilter(request,response);
