@@ -1,5 +1,7 @@
 package com.diplomaProject.StudyBe.User.Service;
 
+import com.diplomaProject.StudyBe.Subject.Subject;
+import com.diplomaProject.StudyBe.Subject.web.dto.SubjectDto;
 import com.diplomaProject.StudyBe.User.Repository.UserRepository;
 
 import com.diplomaProject.StudyBe.User.Role;
@@ -45,14 +47,26 @@ public class UserServiceIpl implements UserService {
 
     @Override
     public User findByEmail(String email) {
-        List<User> userList = findAll();
-        Optional<User> userWithThatEmail = userList.stream()
-                .filter(user -> user.getEmail().equals(email))
-                .findFirst();
+//        List<User> userList = findAll();
+//        Optional<User> userWithThatEmail = userList.stream()
+//                .filter(user -> user.getEmail().equals(email))
+//                .findFirst();
 
-        return userWithThatEmail.orElse(null);
+//        return userWithThatEmail.orElse(null);
+        return userRepository.findByEmail(email).orElse(null);
     }
 
+    @Override
+    public void addSubject(Subject subject, User user) {
+        System.out.println(subject);
+        System.out.println(user);
+        if(user != null && subject != null)
+        {
+            System.out.println("Hellooo");
+            user.getSubjects().add(subject);
+            userRepository.save(user);
+        }
+    }
 
 
 }

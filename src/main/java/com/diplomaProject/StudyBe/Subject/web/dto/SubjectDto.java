@@ -10,6 +10,9 @@ public class SubjectDto {
 
     private String name;
 
+    public SubjectDto() {
+    }
+
     public SubjectDto(String name) {
         this.name = name;
     }

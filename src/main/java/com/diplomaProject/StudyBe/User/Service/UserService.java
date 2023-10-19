@@ -1,5 +1,7 @@
 package com.diplomaProject.StudyBe.User.Service;
 
+import com.diplomaProject.StudyBe.Subject.Subject;
+import com.diplomaProject.StudyBe.Subject.web.dto.SubjectDto;
 import com.diplomaProject.StudyBe.User.User;
 import com.diplomaProject.StudyBe.User.web.dto.UserRegistrationDto;
 import org.springframework.stereotype.Service;
@@ -18,5 +20,5 @@ public interface UserService {
 
     public User findByEmail(String email);
 
-
+   public void addSubject(Subject subject, User user);
 }
