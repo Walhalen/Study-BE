@@ -3,6 +3,9 @@ package com.diplomaProject.StudyBe.User;
 
 import com.diplomaProject.StudyBe.Subject.Subject;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,11 +21,18 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NotEmpty
+    @Size(min=2, max = 20, message = "user name should have at least 2 characters and max 20")
     @Column(name = "username")
     private String username;
+
+    @NotEmpty
+    @Email
     @Column(name = "email", unique = true)
     private String email;
+
+    @NotEmpty
+    @Size(min = 6,  message = "user password should have at least 6 characters")
     @Column(name = "password")
     private String password;
 

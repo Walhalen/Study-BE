@@ -13,7 +13,7 @@ public class SubjectController {
 
     @Autowired
     private SubjectService service;
-    @PostMapping("/addSubject")
+    @PostMapping("/add")
     public void addSubject(@RequestBody SubjectDto subject){
         service.addSub(subject);
     }

@@ -12,6 +12,6 @@ import java.util.Optional;
 public interface SubjectService {
     public void addSub(SubjectDto subject);
 
-    public Subject findByName(String name);
+    public Subject getByName(String name);
 
 }

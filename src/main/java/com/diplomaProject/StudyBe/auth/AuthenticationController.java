@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.naming.AuthenticationException;
 
 @RestController
-@RequestMapping("/api/v1/auth")
-@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/auth")
 public class AuthenticationController {
 
     @Autowired

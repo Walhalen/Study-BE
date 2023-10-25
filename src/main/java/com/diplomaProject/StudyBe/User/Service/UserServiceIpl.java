@@ -46,26 +46,14 @@ public class UserServiceIpl implements UserService {
     }
 
     @Override
-    public User findByEmail(String email) {
-//        List<User> userList = findAll();
-//        Optional<User> userWithThatEmail = userList.stream()
-//                .filter(user -> user.getEmail().equals(email))
-//                .findFirst();
-
-//        return userWithThatEmail.orElse(null);
+    public User getByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);
     }
 
     @Override
     public void addSubject(Subject subject, User user) {
-        System.out.println(subject);
-        System.out.println(user);
-        if(user != null && subject != null)
-        {
-            System.out.println("Hellooo");
-            user.getSubjects().add(subject);
-            userRepository.save(user);
-        }
+        user.getSubjects().add(subject);
+        userRepository.save(user);
     }
 
 

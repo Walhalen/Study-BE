@@ -1,9 +1,28 @@
 package com.diplomaProject.StudyBe.auth;
 
+import io.micrometer.common.lang.NonNull;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.BatchSize;
+
 public class RegisterRequest {
 
+
+
+    @NotEmpty
+    @Size(min=2, max = 20, message = "user name should have at least 2 characters and max 20")
     private String username;
+
+
+    @NotEmpty
+    @Email
     private String email;
+
+
+    @NotEmpty
+    @Size(min = 6,  message = "user password should have at least 6 characters")
     private String password;
 
 

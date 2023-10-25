@@ -44,12 +44,7 @@ public class SecurityConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->{
-//                    auth.anyRequest().permitAll();
-//                    auth.requestMatchers("/auth/").permitAll();
-//                    auth.requestMatchers("/admin/").hasRole("ADMIN");
-
-//                    auth.anyRequest().authenticated();
-                    auth.requestMatchers( "/api/v1/auth/authentication", "/api/v1/auth/register").permitAll();
+                    auth.requestMatchers( "/auth/authentication", "/auth/register").permitAll();
                     auth.requestMatchers(HttpMethod.OPTIONS).permitAll();
                     auth.anyRequest().authenticated();
                 })
@@ -60,12 +55,6 @@ public class SecurityConfiguration {
         return http.build();
     }
 
-//    @Bean(name = DispatcherServletAutoConfiguration.DEFAULT_DISPATCHER_SERVLET_BEAN_NAME)
-//    public DispatcherServlet dispatcherServlet() {
-//        DispatcherServlet dispatcherServlet = new DispatcherServlet();
-//        dispatcherServlet.setDispatchOptionsRequest(true);
-//        return dispatcherServlet;
-//    }
 
     @Bean
     public CorsFilter corsFilter() {
@@ -85,39 +74,4 @@ public class SecurityConfiguration {
 
         return new CorsFilter(source);
     }
-//    @Bean
-//    public WebMvcConfigurer corsConfigurer() {
-//        return new WebMvcConfigurer() {
-//            @Override
-//            public void addCorsMappings(CorsRegistry registry) {
-//                registry.addMapping("/**")
-//                        .allowedOrigins("http://localhost:3000")
-//                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-//                        .allowCredentials(true);
-//            }
-//        };
-//    }
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-//        return http
-////                .requiresChannel(channel ->
-////                        channel.anyRequest().requiresSecure())
-//                .csrf(csrf -> csrf.disable())
-//                .authorizeHttpRequests(auth ->{
-//                    auth.anyRequest().permitAll();
-////                    auth.requestMatchers("/auth/").permitAll();
-////                    auth.requestMatchers("/admin/").hasRole("ADMIN");
-////                    auth.requestMatchers("/user/**").hasAnyRole("ADMIN","USER");
-////                    auth.anyRequest().authenticated();
-//                })
-////                .oauth2ResourceServer(oauth2 -> oauth2
-////                        .jwt(jwt -> jwt
-////                                .jwtAuthenticationConverter(jwtAuthenticationConverter())
-////                        )
-////                )
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .build();
-//    }
-
-
 }

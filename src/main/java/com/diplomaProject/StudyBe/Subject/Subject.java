@@ -2,6 +2,7 @@ package com.diplomaProject.StudyBe.Subject;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name="subject")
@@ -11,6 +12,8 @@ public class Subject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+    @NotEmpty
     @Column(name = "name" )
     private String name;
 

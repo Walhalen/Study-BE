@@ -1,8 +1,16 @@
 package com.diplomaProject.StudyBe.auth;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+
 public class AuthenticationRequest {
 
+    @NotEmpty
+    @Email
     private String email;
+    @NotEmpty
+    @Size(min = 6, message = "user password should have at least 6 characters")
     private String password;
 
     public AuthenticationRequest(String email, String password) {

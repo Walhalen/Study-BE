@@ -15,7 +15,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
-
 public class UserController {
 
     @Autowired
@@ -23,10 +22,10 @@ public class UserController {
 
     @Autowired
     private SubjectService subjectService;
-    @GetMapping("/findByEmail")
-    public User findByEmail(@RequestBody String email)
+    @GetMapping("/getByEmail")
+    public User getByEmail(@RequestBody String email)
     {
-        return userService.findByEmail(email);
+        return userService.getByEmail(email);
     }
 
 
@@ -35,17 +34,17 @@ public class UserController {
         return userService.findAll();
     }
 
-    @GetMapping("/findByID")
-    public User findByID(){
-        return userService.findById(1L);
+    @GetMapping("/findByID/{id}")
+    public User getByID(@PathVariable Long id){
+        return userService.findById(id);
     }
 
-    @PutMapping("/addSubject")
+    @PostMapping("/addSubject")
     public void addSubject(@RequestBody SubjectRequestDto subjectRequest)
     {
-        System.out.println(subjectRequest);
-        User user = userService.findByEmail(subjectRequest.getUserEmail());
-        Subject subject = subjectService.findByName(subjectRequest.getSubjectName());
+        System.out.print(subjectRequest.getSubjectName());
+        User user = userService.getByEmail(subjectRequest.getUserEmail());
+        Subject subject = subjectService.getByName(subjectRequest.getSubjectName());
         userService.addSubject(subject, user);
     }
 
