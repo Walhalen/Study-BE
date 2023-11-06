@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.diplomaProject.StudyBe.Subject.Service.SubjectService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/subject")
 public class SubjectController {
@@ -18,5 +20,10 @@ public class SubjectController {
         service.addSub(subject);
     }
 
+
+    @GetMapping("/findAll")
+    public List<Subject> findAllSubject(){
+        return service.findAllSubject();
+    }
 
 }

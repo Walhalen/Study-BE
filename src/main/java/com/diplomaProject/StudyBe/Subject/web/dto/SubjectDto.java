@@ -11,11 +11,22 @@ public class SubjectDto {
     @NotEmpty
     private String name;
 
+    private String color;
+
     public SubjectDto() {
     }
 
-    public SubjectDto(String name) {
+    public SubjectDto(String name, String color) {
         this.name = name;
+        this.color = color;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public String getName() {
