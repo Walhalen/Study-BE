@@ -1,11 +1,16 @@
 package com.diplomaProject.StudyBe.auth;
 
+import com.diplomaProject.StudyBe.Subject.Subject;
+import com.diplomaProject.StudyBe.Subject.web.dto.SubjectDto;
 import io.micrometer.common.lang.NonNull;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.BatchSize;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class RegisterRequest {
 
@@ -25,15 +30,26 @@ public class RegisterRequest {
     @Size(min = 6,  message = "user password should have at least 6 characters")
     private String password;
 
+    private List<SubjectDto> tags = new LinkedList<SubjectDto>();
+
+
 
     public RegisterRequest() {
     }
 
-    public RegisterRequest(String username, String email, String password) {
+    public RegisterRequest(String username, String email, String password, List<SubjectDto> tags) {
         this.username = username;
-
+        this.tags = tags;
         this.email = email;
         this.password = password;
+    }
+
+    public List<SubjectDto> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<SubjectDto> tags) {
+        this.tags = tags;
     }
 
     public String getUsername() {
@@ -58,5 +74,15 @@ public class RegisterRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "RegisterRequest{" +
+                "username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", tags=" + tags +
+                '}';
     }
 }

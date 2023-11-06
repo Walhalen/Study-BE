@@ -37,5 +37,11 @@ public class SubjectDto {
         this.name = name;
     }
 
-
+    @Override
+    public String toString() {
+        return "SubjectDto{" +
+                "name='" + name + '\'' +
+                ", color='" + color + '\'' +
+                '}';
+    }
 }

@@ -12,7 +12,7 @@ import java.util.Optional;
 @Service
 public interface UserService {
 
-    public User save(UserRegistrationDto registrationDto);
+//    public User save(UserRegistrationDto registrationDto);
 
     public List<User> findAll();
 

@@ -1,8 +1,12 @@
 package com.diplomaProject.StudyBe.auth;
 
 
+import com.diplomaProject.StudyBe.Subject.Service.SubjectService;
+import com.diplomaProject.StudyBe.Subject.Subject;
+import com.diplomaProject.StudyBe.Subject.web.dto.SubjectDto;
 import com.diplomaProject.StudyBe.User.Repository.UserRepository;
 import com.diplomaProject.StudyBe.User.Role;
+import com.diplomaProject.StudyBe.User.Service.UserService;
 import com.diplomaProject.StudyBe.configuration.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.core.userdetails.User;
@@ -23,6 +27,12 @@ public class AuthenticationService {
     @Autowired
     private UserRepository repository;
 
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private SubjectService subjectService;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -40,9 +50,16 @@ public class AuthenticationService {
 //                .password(passwordEncoder.encode(request.getPassword()))
 //                .role(Role.USER)
 //                .build();
-
+        System.out.println(request.toString());
         User user = new User(request.getUsername(),request.getEmail(),passwordEncoder.encode(request.getPassword()),Role.USER);
         repository.save(user);
+        for(SubjectDto subject : request.getTags())
+        {
+            Subject newSubject = subjectService.getByName(subject.getName());
+            userService.addSubject(newSubject, user);
+        }
+        System.out.println(user.toString());
+
         var jwtToken = jwtService.generateToken(user);
         return new AuthenticationResponse(jwtToken);
     }

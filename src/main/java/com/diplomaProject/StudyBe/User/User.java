@@ -2,15 +2,14 @@ package com.diplomaProject.StudyBe.User;
 
 
 import com.diplomaProject.StudyBe.Subject.Subject;
+import com.diplomaProject.StudyBe.Subject.web.dto.SubjectDto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -42,7 +41,7 @@ public class User implements UserDetails {
                     name = "subject_id", referencedColumnName = "id" )
     )
 //    @Column(name = "subject")
-    private Collection<Subject> subjects;
+    private Collection<Subject> tags;
 
     public User() {
     }
@@ -50,12 +49,20 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public User(String username, String email, String password, Role role) {
+    public User(String username, String email, String password,  Role role) {
         this.username = username;
-
         this.email = email;
         this.password = password;
         this.role = role;
+        this.tags = new LinkedList<Subject>();
+    }
+
+    public Collection<Subject> getTags() {
+        return tags;
+    }
+
+    public void setTags(Collection<Subject> tags) {
+        this.tags = tags;
     }
 
     public Long getId() {
@@ -117,11 +124,11 @@ public class User implements UserDetails {
     }
 
     public Collection<Subject> getSubjects() {
-        return subjects;
+        return tags;
     }
 
-    public void setSubjects(Collection<Subject> subjects) {
-        this.subjects = subjects;
+    public void setSubjects(Collection<Subject> tags) {
+        this.tags = tags ;
     }
 
 
@@ -140,7 +147,7 @@ public class User implements UserDetails {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", roles=" + subjects +
+                ", roles=" + tags +
                 '}';
     }
 }

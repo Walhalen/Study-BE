@@ -23,16 +23,16 @@ public class UserServiceIpl implements UserService {
     private UserRepository userRepository;
 
 
-    @Override
-    public User save(UserRegistrationDto registrationDto) {
-
-
-        User user  = new User(registrationDto.getUsername(),
-                registrationDto.getEmail(),registrationDto.getPassword(), ADMIN );
-
-
-        return userRepository.save(user);
-    }
+//    @Override
+//    public User save(UserRegistrationDto registrationDto) {
+//
+//
+//        User user  = new User(registrationDto.getUsername(),
+//                registrationDto.getEmail(),registrationDto.getPassword(), ADMIN );
+//
+//
+//        return userRepository.save(user);
+//    }
 
     @Override
     public List<User> findAll() {
@@ -52,7 +52,7 @@ public class UserServiceIpl implements UserService {
 
     @Override
     public void addSubject(Subject subject, User user) {
-        user.getSubjects().add(subject);
+        user.getTags().add(subject);
         userRepository.save(user);
     }
 
