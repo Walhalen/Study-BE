@@ -32,6 +32,13 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
+
+    @Column(name = "rating")
+    private double rating;
+
+    @Column(name = "description")
+    private String description;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_tags",
@@ -49,12 +56,13 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public User(String username, String email, String password,  Role role) {
+    public User(String username, String email, String password, String description, double rating,  Role role) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.role = role;
-        this.tags = new LinkedList<Subject>();
+        this.description = description;
+        this.rating = rating;
     }
 
     public Collection<Subject> getTags() {
@@ -123,14 +131,22 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public Collection<Subject> getSubjects() {
-        return tags;
+
+    public double getRating() {
+        return rating;
     }
 
-    public void setSubjects(Collection<Subject> tags) {
-        this.tags = tags ;
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Role getRole() {
         return role;

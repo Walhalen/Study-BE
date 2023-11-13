@@ -30,6 +30,12 @@ public class RegisterRequest {
     @Size(min = 6,  message = "user password should have at least 6 characters")
     private String password;
 
+
+    @Size(max = 500, message = "user description should have max 500 characters")
+    private String description;
+
+    private double rating = 0.0;
+
     private List<SubjectDto> tags = new LinkedList<SubjectDto>();
 
 
@@ -37,11 +43,28 @@ public class RegisterRequest {
     public RegisterRequest() {
     }
 
-    public RegisterRequest(String username, String email, String password, List<SubjectDto> tags) {
+    public RegisterRequest(String username, String email, String password, List<SubjectDto> tags, String description) {
         this.username = username;
         this.tags = tags;
         this.email = email;
         this.password = password;
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 
     public List<SubjectDto> getTags() {

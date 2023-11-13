@@ -52,7 +52,12 @@ public class UserServiceIpl implements UserService {
 
     @Override
     public void addSubject(Subject subject, User user) {
+        if(user.getTags() == null)
+        {
+            user.setTags(new LinkedList<>());
+        }
         user.getTags().add(subject);
+        System.out.println(user.getTags());
         userRepository.save(user);
     }
 

@@ -50,15 +50,16 @@ public class AuthenticationService {
 //                .password(passwordEncoder.encode(request.getPassword()))
 //                .role(Role.USER)
 //                .build();
-        System.out.println(request.toString());
-        User user = new User(request.getUsername(),request.getEmail(),passwordEncoder.encode(request.getPassword()),Role.USER);
+
+        User user = new User(request.getUsername(),request.getEmail(),passwordEncoder.encode(request.getPassword()), request.getDescription(), request.getRating(),Role.USER);
         repository.save(user);
         for(SubjectDto subject : request.getTags())
         {
+            System.out.println(subject.toString());
             Subject newSubject = subjectService.getByName(subject.getName());
             userService.addSubject(newSubject, user);
         }
-        System.out.println(user.toString());
+
 
         var jwtToken = jwtService.generateToken(user);
         return new AuthenticationResponse(jwtToken);
@@ -66,7 +67,7 @@ public class AuthenticationService {
 
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) throws AuthenticationException {
-
+        System.out.println(request.toString());
 
 //        authenticationManager.authenticate(
 //                new UsernamePasswordAuthenticationToken(request.getEmail(),
