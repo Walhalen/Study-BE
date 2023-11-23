@@ -61,5 +61,21 @@ public class UserServiceIpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    public List<User> findFilteredUsers(String searchInfo) {
+        List<User> allUsers = findAll();
+        List<User> filteredUsers = new LinkedList<>();
+        System.out.println(searchInfo);
+        System.out.println(allUsers.get(0).getUsername().startsWith("Wahlal123"));
+        for (User user: allUsers) {
+            if(user.getUsername().startsWith(searchInfo))
+            {
+                filteredUsers.add(user);
+            }
+        }
+        System.out.println(filteredUsers.size());
+        return filteredUsers;
+    }
+
 
 }

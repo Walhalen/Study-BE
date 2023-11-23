@@ -28,10 +28,14 @@ public class UserController {
         return userService.getByEmail(email);
     }
 
-
     @GetMapping("/findAll")
     public List<User> findAll(){
         return userService.findAll();
+    }
+
+    @GetMapping("/findFilteredUsers/{searchInfo}")
+    public List<User> findFiltered(@PathVariable String searchInfo){
+        return userService.findFilteredUsers(searchInfo);
     }
 
     @GetMapping("/findByID/{id}")

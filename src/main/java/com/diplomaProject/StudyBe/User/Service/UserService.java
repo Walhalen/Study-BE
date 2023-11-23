@@ -21,4 +21,6 @@ public interface UserService {
     public User getByEmail(String email);
 
    public void addSubject(Subject subject, User user);
+
+    public List<User> findFilteredUsers(String searchInfo);
 }
