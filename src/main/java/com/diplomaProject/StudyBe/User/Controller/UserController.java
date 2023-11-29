@@ -3,6 +3,7 @@ package com.diplomaProject.StudyBe.User.Controller;
 
 import com.diplomaProject.StudyBe.Subject.Service.SubjectService;
 import com.diplomaProject.StudyBe.Subject.Subject;
+import com.diplomaProject.StudyBe.Subject.web.dto.SubjectDto;
 import com.diplomaProject.StudyBe.Subject.web.dto.SubjectRequestDto;
 import com.diplomaProject.StudyBe.User.Service.UserService;
 import com.diplomaProject.StudyBe.User.User;
@@ -30,7 +31,12 @@ public class UserController {
 
     @GetMapping("/findAll")
     public List<User> findAll(){
-        return userService.findAll();
+        try {
+            return userService.findAll();
+        }catch(Exception error)
+        {
+            throw error;
+        }
     }
 
     @GetMapping("/findFilteredUsers/{searchInfo}")
@@ -38,6 +44,11 @@ public class UserController {
         return userService.findFilteredUsers(searchInfo);
     }
 
+    @GetMapping("/findUsersByTag/{tag}")
+    public List<User> findFilteredUsers(@PathVariable String tag)
+    {
+        return userService.findUsersByTag(tag);
+    }
     @GetMapping("/findByID/{id}")
     public User getByID(@PathVariable Long id){
         return userService.findById(id);

@@ -1,19 +1,15 @@
 package com.diplomaProject.StudyBe.User.Service;
 
+import com.diplomaProject.StudyBe.Subject.Repository.SubjectRepository;
 import com.diplomaProject.StudyBe.Subject.Subject;
 import com.diplomaProject.StudyBe.Subject.web.dto.SubjectDto;
 import com.diplomaProject.StudyBe.User.Repository.UserRepository;
 
-import com.diplomaProject.StudyBe.User.Role;
 import com.diplomaProject.StudyBe.User.User;
-import com.diplomaProject.StudyBe.User.web.dto.UserRegistrationDto;
-import org.hibernate.metamodel.internal.AbstractDynamicMapInstantiator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-
-import static com.diplomaProject.StudyBe.User.Role.ADMIN;
 
 @Service
 public class UserServiceIpl implements UserService {
@@ -22,6 +18,8 @@ public class UserServiceIpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private SubjectRepository subjectRepository;
 
 //    @Override
 //    public User save(UserRegistrationDto registrationDto) {
@@ -65,14 +63,39 @@ public class UserServiceIpl implements UserService {
     public List<User> findFilteredUsers(String searchInfo) {
         List<User> allUsers = findAll();
         List<User> filteredUsers = new LinkedList<>();
-        System.out.println(searchInfo);
-        System.out.println(allUsers.get(0).getUsername().startsWith("Wahlal123"));
+
         for (User user: allUsers) {
             if(user.getUsername().startsWith(searchInfo))
             {
                 filteredUsers.add(user);
             }
         }
+        System.out.println(filteredUsers.size());
+        return filteredUsers;
+    }
+
+    @Override
+    public List<User> findUsersByTag(String tag) {
+        List<User> allUsers = findAll();
+        List<User> filteredUsers = new LinkedList<>();
+
+
+
+
+        for (User user: allUsers) {
+            for(Subject subject  : user.getTags().stream().toList())
+            {
+                System.out.println("Hello");
+                if(subject.getName().equals(tag))
+                {
+                    filteredUsers.add(user);
+                    break;
+                }
+            }
+
+        }
+
+
         System.out.println(filteredUsers.size());
         return filteredUsers;
     }

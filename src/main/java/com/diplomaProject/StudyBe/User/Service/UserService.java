@@ -23,4 +23,6 @@ public interface UserService {
    public void addSubject(Subject subject, User user);
 
     public List<User> findFilteredUsers(String searchInfo);
+
+    public List<User> findUsersByTag(String tag);
 }
