@@ -2,12 +2,14 @@ package com.diplomaProject.StudyBe.User;
 
 
 import com.diplomaProject.StudyBe.Subject.Subject;
+import com.diplomaProject.StudyBe.Subject.web.dto.SubjectDto;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -19,25 +21,34 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "first_name")
-    private String first_name;
-    @Column(name = "second_name")
-    private String last_name;
-    @Column(name = "email")
+    @Column(name = "username")
+    private String username;
+
+
+    @Column(name = "email", unique = true)
     private String email;
+
+
     @Column(name = "password")
     private String password;
 
+
+    @Column(name = "rating")
+    private double rating;
+
+    @Column(name = "description")
+    private String description;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
-            name = "users_roles",
+            name = "user_tags",
             joinColumns = @JoinColumn(
                     name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "id" )
+                    name = "subject_id", referencedColumnName = "id" )
     )
-    @Column(name = "roles")
-    private Collection<Subject> subjects;
+//    @Column(name = "subject")
+    private Collection<Subject> tags;
 
     public User() {
     }
@@ -45,12 +56,21 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public User(String first_name, String last_name, String email, String password, Role role) {
-        this.first_name = first_name;
-        this.last_name = last_name;
+    public User(String username, String email, String password, String description, double rating,  Role role) {
+        this.username = username;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.description = description;
+        this.rating = rating;
+    }
+
+    public Collection<Subject> getTags() {
+        return tags;
+    }
+
+    public void setTags(Collection<Subject> tags) {
+        this.tags = tags;
     }
 
     public Long getId() {
@@ -61,20 +81,8 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getFirst_name() {
-        return first_name;
-    }
-
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
-    }
-
-    public String getLast_name() {
-        return last_name;
-    }
-
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -96,7 +104,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
     @Override
@@ -123,14 +131,22 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public Collection<Subject> getSubjects() {
-        return subjects;
+
+    public double getRating() {
+        return rating;
     }
 
-    public void setSubjects(Collection<Subject> subjects) {
-        this.subjects = subjects;
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Role getRole() {
         return role;
@@ -144,11 +160,10 @@ public class User implements UserDetails {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", first_name='" + first_name + '\'' +
-                ", last_name='" + last_name + '\'' +
+                ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", roles=" + subjects +
+                ", roles=" + tags +
                 '}';
     }
 }
