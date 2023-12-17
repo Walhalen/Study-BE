@@ -7,6 +7,7 @@ import com.diplomaProject.StudyBe.Subject.web.dto.SubjectDto;
 import com.diplomaProject.StudyBe.User.Repository.UserRepository;
 import com.diplomaProject.StudyBe.User.Role;
 import com.diplomaProject.StudyBe.User.Service.UserService;
+import com.diplomaProject.StudyBe.User.web.dto.UserDto;
 import com.diplomaProject.StudyBe.configuration.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.core.userdetails.User;
@@ -60,9 +61,9 @@ public class AuthenticationService {
             userService.addSubject(newSubject, user);
         }
 
-
+        UserDto me = new UserDto(user.getUsername(), user.getEmail(), user.getTags(), user.getDescription(), user.getRating());
         var jwtToken = jwtService.generateToken(user);
-        return new AuthenticationResponse(jwtToken);
+        return new AuthenticationResponse(jwtToken, me);
     }
 
 
@@ -79,8 +80,9 @@ public class AuthenticationService {
 
             var jwtToken = jwtService.generateToken(user);
 
-
-            return new AuthenticationResponse(jwtToken);
+            UserDto me = new UserDto(user.getUsername(), user.getEmail(), user.getTags(), user.getDescription(), user.getRating());
+            System.out.println("the me : "  + me.getUsername());
+            return new AuthenticationResponse(jwtToken, me);
         }catch(Exception error)
         {
             throw new AuthenticationException("This email is already in use");

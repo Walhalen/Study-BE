@@ -7,6 +7,8 @@ import com.diplomaProject.StudyBe.User.Repository.UserRepository;
 
 import com.diplomaProject.StudyBe.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -100,5 +102,24 @@ public class UserServiceIpl implements UserService {
         return filteredUsers;
     }
 
+    @Override
+    public List<User> findFilteredUsersPageable(String searchInfo, int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return userRepository.findFilteredUsers(pageable, searchInfo).getContent();
+    }
 
+    @Override
+    public List<User> findAllPageable(int page) {
+        Pageable pageable = PageRequest.of(page, 1);
+        return userRepository.findAll(pageable).getContent();
+    }
+
+    @Override
+    public int findPagesCount(){
+        int count = (int)userRepository.count();
+        if(count % 1 == 0)
+            return count / 1;
+        else
+            return count / 1  + 1;
+    }
 }

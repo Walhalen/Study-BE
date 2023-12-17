@@ -25,4 +25,10 @@ public interface UserService {
     public List<User> findFilteredUsers(String searchInfo);
 
     public List<User> findUsersByTag(String tag);
+
+    public List<User> findFilteredUsersPageable(String searchInfo, int page);
+
+    public List<User> findAllPageable(int page);
+
+    public int findPagesCount();
 }

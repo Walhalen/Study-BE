@@ -7,8 +7,11 @@ import com.diplomaProject.StudyBe.Subject.web.dto.SubjectDto;
 import com.diplomaProject.StudyBe.Subject.web.dto.SubjectRequestDto;
 import com.diplomaProject.StudyBe.User.Service.UserService;
 import com.diplomaProject.StudyBe.User.User;
+import com.diplomaProject.StudyBe.User.web.dto.UserDto;
+import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.annotation.RequiredTypes;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -29,6 +32,13 @@ public class UserController {
         return userService.getByEmail(email);
     }
 
+
+    @GetMapping("/getMe")
+    public UserDto getMe(HttpServletRequest request){
+        User me = (User) request.getAttribute("me");
+        return new UserDto(me.getUsername(), me.getEmail(), me.getTags(), me.getDescription(), me.getRating());
+    }
+
     @GetMapping("/findAll")
     public List<User> findAll(){
         try {
@@ -39,10 +49,26 @@ public class UserController {
         }
     }
 
+    @GetMapping("/findAllPageable")
+    public List<User> findAllPageable(@RequestParam int page )
+    {
+        return userService.findAllPageable(page);
+    }
+
     @GetMapping("/findFilteredUsers/{searchInfo}")
     public List<User> findFiltered(@PathVariable String searchInfo){
         return userService.findFilteredUsers(searchInfo);
     }
+
+    @GetMapping("/findFilteredUsersPageable")
+    public List<User> findFilteredUsersPageable(@RequestParam String searchInfo, @RequestParam int page)
+    {
+        if(searchInfo.equals(""))
+            return userService.findAllPageable(page);
+        else
+            return userService.findFilteredUsersPageable(searchInfo, page);
+    }
+
 
     @GetMapping("/findUsersByTag/{tag}")
     public List<User> findFilteredUsers(@PathVariable String tag)
@@ -52,6 +78,11 @@ public class UserController {
     @GetMapping("/findByID/{id}")
     public User getByID(@PathVariable Long id){
         return userService.findById(id);
+    }
+
+    @GetMapping("/findPagesCount")
+    public int findPagesCount(){
+        return userService.findPagesCount();
     }
 
     @PostMapping("/addSubject")
