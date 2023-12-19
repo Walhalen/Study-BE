@@ -110,16 +110,36 @@ public class UserServiceIpl implements UserService {
 
     @Override
     public List<User> findAllPageable(int page) {
-        Pageable pageable = PageRequest.of(page, 1);
+        Pageable pageable = PageRequest.of(page, 12);
         return userRepository.findAll(pageable).getContent();
     }
 
     @Override
     public int findPagesCount(){
         int count = (int)userRepository.count();
-        if(count % 1 == 0)
-            return count / 1;
+        if(count % 12 == 0)
+            return count / 12;
         else
-            return count / 1  + 1;
+            return count / 12  + 1;
+    }
+
+    @Override
+    public int findPageCountFilter(String searchValue){
+        int count = userRepository.findPageCountFilter(searchValue);
+
+        if(count % 12 == 0)
+            return count / 12;
+        else
+            return count / 12  + 1;
+    }
+
+    @Override
+    public int findPagesCountBySubject(String subjectId) {
+        int count = userRepository.findPageCountBySubject(subjectId);
+        System.out.println("Pages Count " + count);
+        if(count % 12 == 0)
+            return count / 12;
+        else
+            return count / 12  + 1;
     }
 }

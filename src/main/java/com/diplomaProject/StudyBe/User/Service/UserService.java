@@ -31,4 +31,8 @@ public interface UserService {
     public List<User> findAllPageable(int page);
 
     public int findPagesCount();
+
+    public int findPageCountFilter(String searchValue);
+
+    public int findPagesCountBySubject(String subjectId);
 }

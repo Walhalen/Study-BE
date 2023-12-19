@@ -63,6 +63,7 @@ public class UserController {
     @GetMapping("/findFilteredUsersPageable")
     public List<User> findFilteredUsersPageable(@RequestParam String searchInfo, @RequestParam int page)
     {
+        System.out.println("Searched info " + searchInfo);
         if(searchInfo.equals(""))
             return userService.findAllPageable(page);
         else
@@ -81,8 +82,17 @@ public class UserController {
     }
 
     @GetMapping("/findPagesCount")
-    public int findPagesCount(){
-        return userService.findPagesCount();
+    public int findPagesCount(@RequestParam String searchValue, @RequestParam String subjectId)
+    {
+
+        if(subjectId != "")
+        {
+            return userService.findPagesCountBySubject(subjectId);
+        }
+        if(searchValue.equals(""))
+            return userService.findPagesCount();
+        else
+            return userService.findPageCountFilter(searchValue);
     }
 
     @PostMapping("/addSubject")

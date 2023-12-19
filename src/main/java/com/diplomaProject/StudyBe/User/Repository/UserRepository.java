@@ -19,7 +19,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Page<User> findFilteredUsers(Pageable pageable, String searchInfo);
 
 
+    @Query("SELECT COUNT(*) FROM User u WHERE LOWER(u.username) LIKE LOWER(CONCAT(?1, '%'))")
+    int findPageCountFilter(String searchValue);
 
+    @Query("SELECT COUNT(u) FROM User u JOIN u.tags t WHERE t.name = ?1")
+    int findPageCountBySubject(String subjectId);
 
 }
  
