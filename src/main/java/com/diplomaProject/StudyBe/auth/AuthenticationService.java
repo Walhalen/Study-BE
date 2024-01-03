@@ -61,7 +61,7 @@ public class AuthenticationService {
             userService.addSubject(newSubject, user);
         }
 
-        UserDto me = new UserDto(user.getUsername(), user.getEmail(), user.getTags(), user.getDescription(), user.getRating());
+        UserDto me = new UserDto(user.getUsername(), user.getEmail(), user.getTags(),user.getFavorites(), user.getDescription(), user.getRating());
         var jwtToken = jwtService.generateToken(user);
         return new AuthenticationResponse(jwtToken, me);
     }
@@ -80,7 +80,7 @@ public class AuthenticationService {
 
             var jwtToken = jwtService.generateToken(user);
 
-            UserDto me = new UserDto(user.getUsername(), user.getEmail(), user.getTags(), user.getDescription(), user.getRating());
+            UserDto me = new UserDto(user.getUsername(), user.getEmail(), user.getTags(), user.getFavorites(), user.getDescription(), user.getRating());
             System.out.println("the me : "  + me.getUsername());
             return new AuthenticationResponse(jwtToken, me);
         }catch(Exception error)

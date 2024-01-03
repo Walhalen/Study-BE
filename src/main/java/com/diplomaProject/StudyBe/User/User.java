@@ -47,8 +47,20 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(
                     name = "subject_id", referencedColumnName = "id" )
     )
-//    @Column(name = "subject")
     private Collection<Subject> tags;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "favorites",
+            joinColumns = @JoinColumn(
+                    name = "first_user_id", referencedColumnName = "id"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "second_user_id", referencedColumnName = "id"
+            )
+    )
+    private Collection<User> favorites;
+//    @Column(name = "subject")
 
     public User() {
     }
@@ -65,13 +77,6 @@ public class User implements UserDetails {
         this.rating = rating;
     }
 
-    public Collection<Subject> getTags() {
-        return tags;
-    }
-
-    public void setTags(Collection<Subject> tags) {
-        this.tags = tags;
-    }
 
     public Long getId() {
         return id;
@@ -156,6 +161,22 @@ public class User implements UserDetails {
         this.role = role;
     }
 
+    public Collection<Subject> getTags() {
+        return tags;
+    }
+
+    public void setTags(Collection<Subject> tags) {
+        this.tags = tags;
+    }
+
+    public Collection<User> getFavorites() {
+        return favorites;
+    }
+
+    public void setFavorites(Collection<User> favorites) {
+        this.favorites = favorites;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -166,4 +187,6 @@ public class User implements UserDetails {
                 ", roles=" + tags +
                 '}';
     }
+
+
 }

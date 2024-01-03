@@ -63,11 +63,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
                     User userDetails = userService.getByEmail(userEmail);
-                    if(request.getRequestURI().equals("/user/getMe"))
+                    if(request.getRequestURI().equals("/user/getMe") || request.getRequestURI().equals("/user/addFavorite") || request.getRequestURI().equals("/user/removeFavorite"))
                     {
                         System.out.println(userDetails.toString());
                         request.setAttribute("me", userDetails);
-
                     }
                     if (jwtService.isTokenValid(jwt, userDetails)) {
 

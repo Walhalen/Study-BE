@@ -6,6 +6,9 @@ import com.diplomaProject.StudyBe.Subject.web.dto.SubjectDto;
 import com.diplomaProject.StudyBe.User.Repository.UserRepository;
 
 import com.diplomaProject.StudyBe.User.User;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +19,8 @@ import java.util.*;
 @Service
 public class UserServiceIpl implements UserService {
 
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
     private UserRepository userRepository;
@@ -142,4 +147,52 @@ public class UserServiceIpl implements UserService {
         else
             return count / 12  + 1;
     }
+
+    @Override
+    @Transactional
+    public void addFavorite(String favoriteEmail, User me) {
+        User favoritePerson = userRepository.findByEmail(favoriteEmail).orElse(null);
+
+
+        if (favoritePerson != null && me != null) {
+            System.out.println("alo da 2");
+
+            if (me.getFavorites() == null) {
+                System.out.println("Alo da 3");
+                me.setFavorites(new LinkedList<>());
+            }
+            if (!entityManager.contains(me)) {
+                me = entityManager.merge(me);
+            }
+
+            if (!me.getFavorites().contains(favoritePerson)) {
+                System.out.println("alo da 4");
+                System.out.println(me.getFavorites());
+                System.out.println(favoritePerson.getId());
+                me.getFavorites().add(favoritePerson);
+                System.out.println(me.getFavorites());
+
+                userRepository.saveAndFlush(me);
+
+            }
+        }
+    }
+
+    @Override
+    @Transactional
+    public void removeFavorite(String favoriteEmail, User me) {
+        User favoritePerson = userRepository.findByEmail(favoriteEmail).orElse(null);
+        if (favoritePerson != null && me != null)
+        {
+            if (!entityManager.contains(me)) {
+                me = entityManager.merge(me);
+            }
+            System.out.println("in");
+            me.getFavorites().remove(favoritePerson);
+            userRepository.saveAndFlush(me);
+        }
+
+    }
+
+
 }

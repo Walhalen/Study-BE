@@ -35,4 +35,7 @@ public interface UserService {
     public int findPageCountFilter(String searchValue);
 
     public int findPagesCountBySubject(String subjectId);
+
+    public void addFavorite(String favoriteEmail, User me);
+    public void removeFavorite (String favoriteEmail, User me);
 }

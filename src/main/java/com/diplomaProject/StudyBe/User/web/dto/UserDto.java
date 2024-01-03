@@ -13,12 +13,14 @@ public class UserDto {
 
     private Collection tags;
 
+    private Collection favorites;
     private double rating;
 
-    public UserDto(String username, String email, Collection tags, String description, double rating) {
+    public UserDto(String username, String email, Collection tags, Collection favorites, String description, double rating) {
         this.username = username;
         this.email = email;
         this.tags = tags;
+        this.favorites = favorites;
         this.description = description;
         this.rating = rating;
     }
@@ -63,5 +65,13 @@ public class UserDto {
 
     public void setRating(double rating) {
         this.rating = rating;
+    }
+
+    public Collection getFavorites() {
+        return favorites;
+    }
+
+    public void setFavorites(Collection favorites) {
+        this.favorites = favorites;
     }
 }

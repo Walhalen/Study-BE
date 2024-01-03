@@ -36,7 +36,7 @@ public class UserController {
     @GetMapping("/getMe")
     public UserDto getMe(HttpServletRequest request){
         User me = (User) request.getAttribute("me");
-        return new UserDto(me.getUsername(), me.getEmail(), me.getTags(), me.getDescription(), me.getRating());
+        return new UserDto(me.getUsername(), me.getEmail(), me.getTags(),me.getFavorites(), me.getDescription(), me.getRating());
     }
 
     @GetMapping("/findAll")
@@ -102,6 +102,22 @@ public class UserController {
         User user = userService.getByEmail(subjectRequest.getUserEmail());
         Subject subject = subjectService.getByName(subjectRequest.getSubjectName());
         userService.addSubject(subject, user);
+    }
+
+    @PostMapping("/addFavorite")
+    public void addFavorite(@RequestParam String favoriteEmail, HttpServletRequest request)
+    {
+        User me = (User) request.getAttribute("me");
+        System.out.println("alo da");
+        userService.addFavorite(favoriteEmail, me);
+    }
+
+
+    @PostMapping("/removeFavorite")
+    public void removeFavorite(@RequestParam String favoriteEmail,  HttpServletRequest request)
+    {
+        User me = (User) request.getAttribute("me");
+        userService.removeFavorite(favoriteEmail, me);
     }
 
 }
