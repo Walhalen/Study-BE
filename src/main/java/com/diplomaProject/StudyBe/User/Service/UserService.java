@@ -38,4 +38,6 @@ public interface UserService {
 
     public void addFavorite(String favoriteEmail, User me);
     public void removeFavorite (String favoriteEmail, User me);
+
+    public List<Object> test(int id);
 }

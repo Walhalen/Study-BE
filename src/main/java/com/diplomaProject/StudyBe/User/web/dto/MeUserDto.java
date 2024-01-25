@@ -1,9 +1,8 @@
 package com.diplomaProject.StudyBe.User.web.dto;
 
 import java.util.Collection;
-import java.util.List;
 
-public class UserDto {
+public class MeUserDto {
 
     private String username;
 
@@ -13,12 +12,14 @@ public class UserDto {
 
     private Collection tags;
 
+    private Collection favorites;
     private double rating;
 
-    public UserDto(String username, String email, Collection tags,  String description, double rating) {
+    public MeUserDto(String username, String email, Collection tags, Collection favorites, String description, double rating) {
         this.username = username;
         this.email = email;
         this.tags = tags;
+        this.favorites = favorites;
         this.description = description;
         this.rating = rating;
     }
@@ -65,5 +66,11 @@ public class UserDto {
         this.rating = rating;
     }
 
+    public Collection getFavorites() {
+        return favorites;
+    }
 
+    public void setFavorites(Collection favorites) {
+        this.favorites = favorites;
+    }
 }

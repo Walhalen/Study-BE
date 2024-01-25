@@ -194,5 +194,10 @@ public class UserServiceIpl implements UserService {
 
     }
 
+    @Override
+    public List<Object> test(int id){
+        return userRepository.test(id);
+    }
+
 
 }
