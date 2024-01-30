@@ -6,6 +6,8 @@ import com.diplomaProject.StudyBe.Subject.web.dto.SubjectDto;
 import com.diplomaProject.StudyBe.User.Repository.UserRepository;
 
 import com.diplomaProject.StudyBe.User.User;
+import com.diplomaProject.StudyBe.User.web.dto.FavoriteUserDto;
+import com.diplomaProject.StudyBe.User.web.dto.UserDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -40,9 +42,15 @@ public class UserServiceIpl implements UserService {
 //    }
 
     @Override
-    public List<User> findAll() {
+    public List<UserDto> findAll() {
 
-         return userRepository.findAll();
+        List<UserDto> users = userRepository.findAll().stream().map((user) -> {
+             Collection<FavoriteUserDto> favorites = user.getFavorites().stream().map((favorite) -> {
+                 return new FavoriteUserDto(favorite.getUsername(),favorite.getEmail(), favorite.getTags(), favorite.getDescription(), favorite.getRating());
+             }).toList();
+             return new UserDto(user.getUsername(),user.getEmail(), user.getTags(), user.getDescription(), favorites, user.getRating());
+         }).toList();
+         return users;
     }
 
     @Override
@@ -67,11 +75,11 @@ public class UserServiceIpl implements UserService {
     }
 
     @Override
-    public List<User> findFilteredUsers(String searchInfo) {
-        List<User> allUsers = findAll();
-        List<User> filteredUsers = new LinkedList<>();
+    public List<UserDto> findFilteredUsers(String searchInfo) {
+        List<UserDto> allUsers = findAll();
+        List<UserDto> filteredUsers = new LinkedList<>();
 
-        for (User user: allUsers) {
+        for (UserDto user: allUsers) {
             if(user.getUsername().startsWith(searchInfo))
             {
                 filteredUsers.add(user);
@@ -82,14 +90,14 @@ public class UserServiceIpl implements UserService {
     }
 
     @Override
-    public List<User> findUsersByTag(String tag) {
-        List<User> allUsers = findAll();
-        List<User> filteredUsers = new LinkedList<>();
+    public List<UserDto> findUsersByTag(String tag) {
+        List<UserDto> allUsers = findAll();
+        List<UserDto> filteredUsers = new LinkedList<>();
 
 
 
 
-        for (User user: allUsers) {
+        for (UserDto user: allUsers) {
             for(Subject subject  : user.getTags().stream().toList())
             {
                 System.out.println("Hello");
@@ -108,15 +116,26 @@ public class UserServiceIpl implements UserService {
     }
 
     @Override
-    public List<User> findFilteredUsersPageable(String searchInfo, int page) {
+    public List<UserDto> findFilteredUsersPageable(String searchInfo, int page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return userRepository.findFilteredUsers(pageable, searchInfo).getContent();
+        return userRepository.findFilteredUsers(pageable, searchInfo).getContent().stream().map((user) -> {
+            Collection<FavoriteUserDto> favorites = user.getFavorites().stream().map((favorite) -> {
+                return new FavoriteUserDto(favorite.getUsername(),favorite.getEmail(), favorite.getTags(), favorite.getDescription(), favorite.getRating());
+            }).toList();
+            return new UserDto(user.getUsername(),user.getEmail(), user.getTags(), user.getDescription(), favorites, user.getRating());
+        }).toList();
     }
 
     @Override
-    public List<User> findAllPageable(int page) {
+    public List<UserDto> findAllPageable(int page) {
         Pageable pageable = PageRequest.of(page, 12);
-        return userRepository.findAll(pageable).getContent();
+        return userRepository.findAll(pageable).getContent().stream().map((user) -> {
+            Collection<FavoriteUserDto> favorites = user.getFavorites().stream().map((favorite) -> {
+                return new FavoriteUserDto(favorite.getUsername(),favorite.getEmail(), favorite.getTags(), favorite.getDescription(), favorite.getRating());
+            }).toList();
+            return new UserDto(user.getUsername(),user.getEmail(), user.getTags(), user.getDescription(), favorites, user.getRating());
+        }).toList();
+
     }
 
     @Override

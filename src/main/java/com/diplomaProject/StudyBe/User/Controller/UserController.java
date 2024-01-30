@@ -7,6 +7,7 @@ import com.diplomaProject.StudyBe.Subject.web.dto.SubjectDto;
 import com.diplomaProject.StudyBe.Subject.web.dto.SubjectRequestDto;
 import com.diplomaProject.StudyBe.User.Service.UserService;
 import com.diplomaProject.StudyBe.User.User;
+import com.diplomaProject.StudyBe.User.web.dto.FavoriteUserDto;
 import com.diplomaProject.StudyBe.User.web.dto.MeUserDto;
 import com.diplomaProject.StudyBe.User.web.dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,7 +17,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
@@ -37,7 +40,10 @@ public class UserController {
         @GetMapping("/getMe")
         public MeUserDto getMe(HttpServletRequest request){
             User me = (User) request.getAttribute("me");
-            return new MeUserDto(me.getUsername(), me.getEmail(), me.getTags(),me.getFavorites(), me.getDescription(), me.getRating());
+            Collection<FavoriteUserDto> favorites = me.getFavorites().stream().map((favorite) -> {
+                return new FavoriteUserDto(favorite.getUsername(), favorite.getEmail(), favorite.getTags(), favorite.getDescription(), favorite.getRating());
+            }).toList();
+            return new MeUserDto(me.getUsername(), me.getEmail(), me.getTags(),favorites, me.getDescription(), me.getRating());
         }
 
 
@@ -47,7 +53,7 @@ public class UserController {
         }
 
         @GetMapping("/findAll")
-        public List<User> findAll(){
+        public List<UserDto> findAll(){
             try {
                 return userService.findAll();
             }catch(Exception error)
@@ -57,18 +63,18 @@ public class UserController {
         }
 
         @GetMapping("/findAllPageable")
-        public List<User> findAllPageable(@RequestParam int page )
+        public List<UserDto> findAllPageable(@RequestParam int page )
         {
             return userService.findAllPageable(page);
         }
 
         @GetMapping("/findFilteredUsers/{searchInfo}")
-        public List<User> findFiltered(@PathVariable String searchInfo){
+        public List<UserDto> findFiltered(@PathVariable String searchInfo){
             return userService.findFilteredUsers(searchInfo);
         }
 
         @GetMapping("/findFilteredUsersPageable")
-        public List<User> findFilteredUsersPageable(@RequestParam String searchInfo, @RequestParam int page)
+        public List<UserDto> findFilteredUsersPageable(@RequestParam String searchInfo, @RequestParam int page)
         {
             System.out.println("Searched info " + searchInfo);
             if(searchInfo.equals(""))
@@ -79,7 +85,7 @@ public class UserController {
 
 
         @GetMapping("/findUsersByTag/{tag}")
-        public List<User> findFilteredUsers(@PathVariable String tag)
+        public List<UserDto> findFilteredUsers(@PathVariable String tag)
         {
             return userService.findUsersByTag(tag);
         }

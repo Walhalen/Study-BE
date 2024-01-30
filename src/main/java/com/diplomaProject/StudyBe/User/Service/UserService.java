@@ -3,6 +3,7 @@ package com.diplomaProject.StudyBe.User.Service;
 import com.diplomaProject.StudyBe.Subject.Subject;
 import com.diplomaProject.StudyBe.Subject.web.dto.SubjectDto;
 import com.diplomaProject.StudyBe.User.User;
+import com.diplomaProject.StudyBe.User.web.dto.UserDto;
 import com.diplomaProject.StudyBe.User.web.dto.UserRegistrationDto;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ public interface UserService {
 
 //    public User save(UserRegistrationDto registrationDto);
 
-    public List<User> findAll();
+    public List<UserDto> findAll();
 
     public User findById(Long id);
 
@@ -22,13 +23,13 @@ public interface UserService {
 
    public void addSubject(Subject subject, User user);
 
-    public List<User> findFilteredUsers(String searchInfo);
+    public List<UserDto> findFilteredUsers(String searchInfo);
 
-    public List<User> findUsersByTag(String tag);
+    public List<UserDto> findUsersByTag(String tag);
 
-    public List<User> findFilteredUsersPageable(String searchInfo, int page);
+    public List<UserDto> findFilteredUsersPageable(String searchInfo, int page);
 
-    public List<User> findAllPageable(int page);
+    public List<UserDto> findAllPageable(int page);
 
     public int findPagesCount();
 
