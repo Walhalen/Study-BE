@@ -6,7 +6,7 @@ import com.diplomaProject.StudyBe.Subject.web.dto.SubjectDto;
 import com.diplomaProject.StudyBe.User.Repository.UserRepository;
 
 import com.diplomaProject.StudyBe.User.User;
-import com.diplomaProject.StudyBe.User.web.dto.FavoriteUserDto;
+import com.diplomaProject.StudyBe.User.web.dto.FavoriteOrHistoryUserDto;
 import com.diplomaProject.StudyBe.User.web.dto.UserDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
+@Transactional
 public class UserServiceIpl implements UserService {
 
     @PersistenceContext
@@ -45,10 +46,13 @@ public class UserServiceIpl implements UserService {
     public List<UserDto> findAll() {
 
         List<UserDto> users = userRepository.findAll().stream().map((user) -> {
-             Collection<FavoriteUserDto> favorites = user.getFavorites().stream().map((favorite) -> {
-                 return new FavoriteUserDto(favorite.getUsername(),favorite.getEmail(), favorite.getTags(), favorite.getDescription(), favorite.getRating());
+             Collection<FavoriteOrHistoryUserDto> favorites = user.getFavorites().stream().map((favorite) -> {
+                 return new FavoriteOrHistoryUserDto(favorite.getUsername(),favorite.getEmail(), favorite.getTags(), favorite.getDescription(), favorite.getRating());
              }).toList();
-             return new UserDto(user.getUsername(),user.getEmail(), user.getTags(), user.getDescription(), favorites, user.getRating());
+             Collection<FavoriteOrHistoryUserDto> history = user.getHistory().stream().map((historyUser) -> {
+                 return new FavoriteOrHistoryUserDto(historyUser.getUsername(), historyUser.getEmail(), historyUser.getTags(), historyUser.getDescription(), historyUser.getRating());
+             }).toList();
+             return new UserDto(user.getUsername(),user.getEmail(), user.getTags(), user.getDescription(), favorites, history, user.getRating());
          }).toList();
          return users;
     }
@@ -119,10 +123,14 @@ public class UserServiceIpl implements UserService {
     public List<UserDto> findFilteredUsersPageable(String searchInfo, int page) {
         Pageable pageable = PageRequest.of(page, 5);
         return userRepository.findFilteredUsers(pageable, searchInfo).getContent().stream().map((user) -> {
-            Collection<FavoriteUserDto> favorites = user.getFavorites().stream().map((favorite) -> {
-                return new FavoriteUserDto(favorite.getUsername(),favorite.getEmail(), favorite.getTags(), favorite.getDescription(), favorite.getRating());
+            Collection<FavoriteOrHistoryUserDto> favorites = user.getFavorites().stream().map((favorite) -> {
+                return new FavoriteOrHistoryUserDto(favorite.getUsername(),favorite.getEmail(), favorite.getTags(), favorite.getDescription(), favorite.getRating());
             }).toList();
-            return new UserDto(user.getUsername(),user.getEmail(), user.getTags(), user.getDescription(), favorites, user.getRating());
+
+            Collection<FavoriteOrHistoryUserDto> history = user.getHistory().stream().map((historyUser) -> {
+                return new FavoriteOrHistoryUserDto(historyUser.getUsername(),historyUser.getEmail(), historyUser.getTags(), historyUser.getDescription(), historyUser.getRating());
+            }).toList();
+            return new UserDto(user.getUsername(),user.getEmail(), user.getTags(), user.getDescription(), favorites,history, user.getRating());
         }).toList();
     }
 
@@ -130,10 +138,13 @@ public class UserServiceIpl implements UserService {
     public List<UserDto> findAllPageable(int page) {
         Pageable pageable = PageRequest.of(page, 12);
         return userRepository.findAll(pageable).getContent().stream().map((user) -> {
-            Collection<FavoriteUserDto> favorites = user.getFavorites().stream().map((favorite) -> {
-                return new FavoriteUserDto(favorite.getUsername(),favorite.getEmail(), favorite.getTags(), favorite.getDescription(), favorite.getRating());
+            Collection<FavoriteOrHistoryUserDto> favorites = user.getFavorites().stream().map((favorite) -> {
+                return new FavoriteOrHistoryUserDto(favorite.getUsername(),favorite.getEmail(), favorite.getTags(), favorite.getDescription(), favorite.getRating());
             }).toList();
-            return new UserDto(user.getUsername(),user.getEmail(), user.getTags(), user.getDescription(), favorites, user.getRating());
+            Collection<FavoriteOrHistoryUserDto> history = user.getHistory().stream().map((historyUser) -> {
+                return new FavoriteOrHistoryUserDto(historyUser.getUsername(),historyUser.getEmail(), historyUser.getTags(), historyUser.getDescription(), historyUser.getRating());
+            }).toList();
+            return new UserDto(user.getUsername(),user.getEmail(), user.getTags(), user.getDescription(), favorites,history, user.getRating());
         }).toList();
 
     }
@@ -174,10 +185,7 @@ public class UserServiceIpl implements UserService {
 
 
         if (favoritePerson != null && me != null) {
-            System.out.println("alo da 2");
-
             if (me.getFavorites() == null) {
-                System.out.println("Alo da 3");
                 me.setFavorites(new LinkedList<>());
             }
             if (!entityManager.contains(me)) {
@@ -185,7 +193,6 @@ public class UserServiceIpl implements UserService {
             }
 
             if (!me.getFavorites().contains(favoritePerson)) {
-                System.out.println("alo da 4");
                 System.out.println(me.getFavorites());
                 System.out.println(favoritePerson.getId());
                 me.getFavorites().add(favoritePerson);
@@ -211,6 +218,34 @@ public class UserServiceIpl implements UserService {
             userRepository.saveAndFlush(me);
         }
 
+    }
+
+    @Override
+    @Transactional
+    public void addHistory(String historyEmail, User me) {
+        User historyPerson = userRepository.findByEmail(historyEmail).orElse(null);
+
+        if (historyPerson != null && me != null) {
+            if (me.getHistory() == null) {
+                me.setHistory(new LinkedList<>());
+            }
+            if (!entityManager.contains(me)) {
+                me = entityManager.merge(me);
+            }
+
+            if (!me.getHistory().contains(historyPerson)) {
+                me.getHistory().add(historyPerson);
+                userRepository.saveAndFlush(me);
+            }
+        }
+    }
+
+    @Override
+    public void removeHistory(String historyEmail, User me) {
+        User historyUser = userRepository.findByEmail((historyEmail)).orElse(null);
+        if(historyUser != null){
+            userRepository.deleteHistoryUser(historyUser.getId(), me.getId());
+        }
     }
 
     @Override

@@ -40,5 +40,9 @@ public interface UserService {
     public void addFavorite(String favoriteEmail, User me);
     public void removeFavorite (String favoriteEmail, User me);
 
+    public void addHistory(String historyEmail, User me);
+
+    public void removeHistory(String historyEmail, User me);
+
     public List<Object> test(int id);
 }

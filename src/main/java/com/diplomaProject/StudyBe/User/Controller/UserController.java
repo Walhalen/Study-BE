@@ -7,7 +7,7 @@ import com.diplomaProject.StudyBe.Subject.web.dto.SubjectDto;
 import com.diplomaProject.StudyBe.Subject.web.dto.SubjectRequestDto;
 import com.diplomaProject.StudyBe.User.Service.UserService;
 import com.diplomaProject.StudyBe.User.User;
-import com.diplomaProject.StudyBe.User.web.dto.FavoriteUserDto;
+import com.diplomaProject.StudyBe.User.web.dto.FavoriteOrHistoryUserDto;
 import com.diplomaProject.StudyBe.User.web.dto.MeUserDto;
 import com.diplomaProject.StudyBe.User.web.dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,10 +40,13 @@ public class UserController {
         @GetMapping("/getMe")
         public MeUserDto getMe(HttpServletRequest request){
             User me = (User) request.getAttribute("me");
-            Collection<FavoriteUserDto> favorites = me.getFavorites().stream().map((favorite) -> {
-                return new FavoriteUserDto(favorite.getUsername(), favorite.getEmail(), favorite.getTags(), favorite.getDescription(), favorite.getRating());
+            Collection<FavoriteOrHistoryUserDto> favorites = me.getFavorites().stream().map((favorite) -> {
+                return new FavoriteOrHistoryUserDto(favorite.getUsername(), favorite.getEmail(), favorite.getTags(), favorite.getDescription(), favorite.getRating());
             }).toList();
-            return new MeUserDto(me.getUsername(), me.getEmail(), me.getTags(),favorites, me.getDescription(), me.getRating());
+            Collection<FavoriteOrHistoryUserDto> history = me.getHistory().stream().map((historyUser) -> {
+                return new FavoriteOrHistoryUserDto(historyUser.getUsername(),historyUser.getEmail(), historyUser.getTags(), historyUser.getDescription(), historyUser.getRating());
+            }).toList();
+            return new MeUserDto(me.getUsername(), me.getEmail(), me.getTags(),favorites, history,me.getDescription(), me.getRating());
         }
 
 
@@ -131,6 +134,20 @@ public class UserController {
         {
             User me = (User) request.getAttribute("me");
             userService.removeFavorite(favoriteEmail, me);
+        }
+
+        @PostMapping("/addHistory")
+        public void addHistory(@RequestParam String historyEmail, HttpServletRequest request)
+        {
+            User me = (User) request.getAttribute("me");
+            userService.addHistory(historyEmail, me);
+        }
+
+        @DeleteMapping("/removeHistory")
+        public void removeHistory(@RequestParam String historyEmail, HttpServletRequest request)
+        {
+            User me = (User) request.getAttribute("me");
+            userService.removeHistory(historyEmail, me);
         }
 
 }

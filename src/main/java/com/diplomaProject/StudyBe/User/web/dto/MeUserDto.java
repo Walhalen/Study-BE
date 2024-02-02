@@ -14,16 +14,19 @@ public class MeUserDto {
 
     private Collection<Subject> tags;
 
-    private Collection<FavoriteUserDto> favorites;
+    private Collection<FavoriteOrHistoryUserDto> favorites;
+
+    private Collection<FavoriteOrHistoryUserDto> history;
     private double rating;
 
-    public MeUserDto(String username, String email, Collection<Subject> tags, Collection<FavoriteUserDto> favorites, String description, double rating) {
+    public MeUserDto(String username, String email, Collection<Subject> tags, Collection<FavoriteOrHistoryUserDto> favorites,Collection<FavoriteOrHistoryUserDto> history, String description, double rating) {
         this.username = username;
         this.email = email;
         this.tags = tags;
         this.favorites = favorites;
         this.description = description;
         this.rating = rating;
+        this.history = history;
     }
 
 
@@ -60,11 +63,11 @@ public class MeUserDto {
         this.tags = tags;
     }
 
-    public Collection<FavoriteUserDto> getFavorites() {
+    public Collection<FavoriteOrHistoryUserDto> getFavorites() {
         return favorites;
     }
 
-    public void setFavorites(Collection<FavoriteUserDto> favorites) {
+    public void setFavorites(Collection<FavoriteOrHistoryUserDto> favorites) {
         this.favorites = favorites;
     }
 

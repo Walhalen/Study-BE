@@ -61,7 +61,17 @@ public class User implements UserDetails {
     )
     private Collection<User> favorites;
 //    @Column(name = "subject")
-
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "history",
+            joinColumns = @JoinColumn(
+                    name = "first_user_id", referencedColumnName = "id"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "second_user_id", referencedColumnName = "id"
+            )
+    )
+    private Collection<User> history;
     public User() {
     }
 
@@ -175,6 +185,14 @@ public class User implements UserDetails {
 
     public void setFavorites(Collection<User> favorites) {
         this.favorites = favorites;
+    }
+
+    public Collection<User> getHistory() {
+        return history;
+    }
+
+    public void setHistory(Collection<User> history) {
+        this.history = history;
     }
 
     @Override

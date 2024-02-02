@@ -3,6 +3,7 @@ package com.diplomaProject.StudyBe.User.Repository;
 import com.diplomaProject.StudyBe.User.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -29,7 +30,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT DISTINCT u.favorites FROM User u LEFT JOIN  u.favorites f WHERE u.id = ?1")
     List<Object> test(int userId);
 
-
+    @Modifying
+    @Query(value = "DELETE FROM history WHERE first_user_id = ?2 AND second_user_id = ?1", nativeQuery = true)
+    void deleteHistoryUser(long id, long myId);
 
 }
  
