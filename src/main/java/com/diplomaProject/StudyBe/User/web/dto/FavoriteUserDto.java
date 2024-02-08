@@ -3,9 +3,8 @@ package com.diplomaProject.StudyBe.User.web.dto;
 import com.diplomaProject.StudyBe.Subject.Subject;
 
 import java.util.Collection;
-import java.util.List;
 
-public class UserDto {
+public class FavoriteUserDto {
 
     private String username;
 
@@ -14,17 +13,14 @@ public class UserDto {
 
     private Collection<Subject> tags;
 
-    private Collection<FavoriteUserDto> favorites;
-
     private double rating;
 
-    public UserDto(String username, String email, Collection<Subject> tags,  String description, Collection<FavoriteUserDto> favorites, double rating) {
+    public FavoriteUserDto(String username,  String email, Collection<Subject> tags,  String description, double rating) {
         this.username = username;
         this.email = email;
         this.tags = tags;
         this.description = description;
         this.rating = rating;
-        this.favorites = favorites;
     }
 
     public String getEmail() {
@@ -66,13 +62,5 @@ public class UserDto {
 
     public void setRating(double rating) {
         this.rating = rating;
-    }
-
-    public Collection<FavoriteUserDto> getFavorites() {
-        return favorites;
-    }
-
-    public void setFavorites(Collection<FavoriteUserDto> favorites) {
-        this.favorites = favorites;
     }
 }
