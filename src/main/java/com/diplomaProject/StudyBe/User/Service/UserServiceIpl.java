@@ -224,7 +224,6 @@ public class UserServiceIpl implements UserService {
     @Transactional
     public void addHistory(String historyEmail, User me) {
         User historyPerson = userRepository.findByEmail(historyEmail).orElse(null);
-
         if (historyPerson != null && me != null) {
             if (me.getHistory() == null) {
                 me.setHistory(new LinkedList<>());
@@ -237,13 +236,24 @@ public class UserServiceIpl implements UserService {
                 me.getHistory().add(historyPerson);
                 userRepository.saveAndFlush(me);
             }
+            else
+            {
+                me.getHistory().remove(historyPerson);
+                me.getHistory().add(historyPerson);
+                userRepository.saveAndFlush(me);
+            }
+
         }
     }
 
     @Override
+    @Transactional
     public void removeHistory(String historyEmail, User me) {
         User historyUser = userRepository.findByEmail((historyEmail)).orElse(null);
-        if(historyUser != null){
+        if(historyUser != null && me != null){
+            if (!entityManager.contains(me)) {
+                me = entityManager.merge(me);
+            }
             userRepository.deleteHistoryUser(historyUser.getId(), me.getId());
         }
     }

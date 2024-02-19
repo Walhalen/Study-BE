@@ -84,18 +84,24 @@ public class AuthenticationService {
 //        );
         try {
             User user = repository.findByEmail(request.getEmail()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            if(user != null && passwordEncoder.matches(request.getPassword(), user.getPassword()))
+            {
+                var jwtToken = jwtService.generateToken(user);
+                Collection<FavoriteOrHistoryUserDto> favorites = user.getFavorites().stream().map((favorite) -> {
+                    return new FavoriteOrHistoryUserDto(favorite.getUsername(), favorite.getEmail(), favorite.getTags(), favorite.getDescription(), favorite.getRating());
+                }).toList();
+                Collection<FavoriteOrHistoryUserDto> history = user.getHistory().stream().map((historyUser) -> {
+                    return new FavoriteOrHistoryUserDto(historyUser.getUsername(),historyUser.getEmail(), historyUser.getTags(), historyUser.getDescription(), historyUser.getRating());
+                }).toList();
+                MeUserDto me = new MeUserDto(user.getUsername(), user.getEmail(), user.getTags(), favorites,history, user.getDescription(), user.getRating());
+                System.out.println("the me : "  + me.getUsername());
+                return new AuthenticationResponse(jwtToken, me);
+            }
+            else{
+                throw new UsernameNotFoundException("The password is wrong");
+            }
 
 
-            var jwtToken = jwtService.generateToken(user);
-            Collection<FavoriteOrHistoryUserDto> favorites = user.getFavorites().stream().map((favorite) -> {
-                return new FavoriteOrHistoryUserDto(favorite.getUsername(), favorite.getEmail(), favorite.getTags(), favorite.getDescription(), favorite.getRating());
-            }).toList();
-            Collection<FavoriteOrHistoryUserDto> history = user.getHistory().stream().map((historyUser) -> {
-                return new FavoriteOrHistoryUserDto(historyUser.getUsername(),historyUser.getEmail(), historyUser.getTags(), historyUser.getDescription(), historyUser.getRating());
-            }).toList();
-            MeUserDto me = new MeUserDto(user.getUsername(), user.getEmail(), user.getTags(), favorites,history, user.getDescription(), user.getRating());
-            System.out.println("the me : "  + me.getUsername());
-            return new AuthenticationResponse(jwtToken, me);
         }catch(Exception error)
         {
             throw new AuthenticationException("This email is already in use");

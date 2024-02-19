@@ -78,4 +78,12 @@ public class MeUserDto {
     public void setRating(double rating) {
         this.rating = rating;
     }
+
+    public Collection<FavoriteOrHistoryUserDto> getHistory() {
+        return history;
+    }
+
+    public void setHistory(Collection<FavoriteOrHistoryUserDto> history) {
+        this.history = history;
+    }
 }

@@ -3,7 +3,6 @@ package com.diplomaProject.StudyBe.User.Controller;
 
 import com.diplomaProject.StudyBe.Subject.Service.SubjectService;
 import com.diplomaProject.StudyBe.Subject.Subject;
-import com.diplomaProject.StudyBe.Subject.web.dto.SubjectDto;
 import com.diplomaProject.StudyBe.Subject.web.dto.SubjectRequestDto;
 import com.diplomaProject.StudyBe.User.Service.UserService;
 import com.diplomaProject.StudyBe.User.User;
@@ -11,15 +10,11 @@ import com.diplomaProject.StudyBe.User.web.dto.FavoriteOrHistoryUserDto;
 import com.diplomaProject.StudyBe.User.web.dto.MeUserDto;
 import com.diplomaProject.StudyBe.User.web.dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
-import org.aspectj.lang.annotation.RequiredTypes;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
@@ -119,6 +114,7 @@ public class UserController {
             Subject subject = subjectService.getByName(subjectRequest.getSubjectName());
             userService.addSubject(subject, user);
         }
+
 
         @PostMapping("/addFavorite")
         public void addFavorite(@RequestParam String favoriteEmail, HttpServletRequest request)
