@@ -4,7 +4,7 @@ import com.diplomaProject.StudyBe.Subject.Subject;
 
 import java.util.Collection;
 
-public class FavoriteUserDto {
+public class FavoriteOrHistoryUserDto {
 
     private String username;
 
@@ -15,7 +15,7 @@ public class FavoriteUserDto {
 
     private double rating;
 
-    public FavoriteUserDto(String username,  String email, Collection<Subject> tags,  String description, double rating) {
+    public FavoriteOrHistoryUserDto(String username,  String email, Collection<Subject> tags,  String description, double rating) {
         this.username = username;
         this.email = email;
         this.tags = tags;

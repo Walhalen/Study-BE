@@ -32,9 +32,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private JwtService jwtService;
     @Autowired
     private UserDetailsService userDetailsService;
-//    public JwtAuthenticationFilter(JwtService jwtService) {
-//        this.jwtService = jwtService;
-//    }
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -59,11 +56,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 jwt = authHeader.substring(7);
                 System.out.println(jwt);
                 System.out.println(authHeader);
-                userEmail = jwtService.extractUsername(jwt);
+                userEmail = jwtService.extractEmail(jwt);
                 if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
                     User userDetails = userService.getByEmail(userEmail);
-                    if(request.getRequestURI().equals("/user/getMe") || request.getRequestURI().equals("/user/addFavorite") || request.getRequestURI().equals("/user/removeFavorite"))
+                    if(request.getRequestURI().equals("/user/getMe")
+                            || request.getRequestURI().equals("/user/addFavorite")
+                            || request.getRequestURI().equals("/user/removeFavorite")
+                            || request.getRequestURI().equals("/user/addHistory")
+                            || request.getRequestURI().equals("/user/removeHistory"))
                     {
                         System.out.println(userDetails.toString());
                         request.setAttribute("me", userDetails);
@@ -82,6 +83,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         SecurityContextHolder.getContext().setAuthentication(authToken);
 
                     }
+                    System.out.println(jwtService.isTokenValid(jwt, userDetails));
                 }
 
                 filterChain.doFilter(request, response);
