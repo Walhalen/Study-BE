@@ -58,13 +58,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 System.out.println(authHeader);
                 userEmail = jwtService.extractEmail(jwt);
                 if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
+                    System.out.println("This is Request pathhhhhhhhhhhhhhhhhhhhhhhhhhh: " + request.getRequestURI());
                     User userDetails = userService.getByEmail(userEmail);
                     if(request.getRequestURI().equals("/user/getMe")
                             || request.getRequestURI().equals("/user/addFavorite")
                             || request.getRequestURI().equals("/user/removeFavorite")
                             || request.getRequestURI().equals("/user/addHistory")
-                            || request.getRequestURI().equals("/user/removeHistory"))
+                            || request.getRequestURI().equals("/user/removeHistory")
+                            || request.getRequestURI().equals("/comments/addComment")
+                            || request.getRequestURI().equals("/comments/getCommentsBySenderAndReceiver"))
                     {
                         System.out.println(userDetails.toString());
                         request.setAttribute("me", userDetails);
